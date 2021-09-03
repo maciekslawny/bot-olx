@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container w-75 mt-3">
+    <h3><i class="fas fa-plus-square"></i> DODAWANIE WYSZUKIWAŃ</h3>
+
+    <form action="/add"  method="post">
+      <input type="text" class="form-control mb-1" placeholder="Nazwa przedmiotu.." name = 'phrase'>
+      <input type="number" class="form-control mb-1" placeholder="Min cena [PLN]" name = 'min_price'>
+      <input type="number" class="form-control mb-1" placeholder="Max cena [PLN]" name = 'max_price'>
+      <select class="form-select mb-1" aria-label="Default select example" name='category'>
+        <option value="">Wybór kategorii..</option>
+        <option value="motoryzacja">Motoryzacja</option>
+        <option value="motoryzacja/samochody">Samochody</option>
+        <option value="nieruchomosci">Nieruchomości</option>
+        <option value="nieruchomosci/mieszkania/sprzedaz">Mieszkanie(sprzedaż)</option> 
+        <option value="praca">Praca</option>
+        <option value="dom-ogrod">Dom i Ogród</option>
+        <option value="elektronika">Elektronika</option>
+        <option value="moda">Moda</option>
+        <option value="rolnictwo">Rolnictwo</option>
+        <option value="rolnictwo/maszyny-rolnicze">Maszyny rolnicze</option>
+        <option value="zwierzeta">Zwierzęta</option>
+        <option value="dla-dzieci">Dla Dzieci</option>
+        <option value="sport-hobby">Sport i Hobby</option>
+        <option value="muzyka-edukacja">Muzyka i Edukacja</option>
+        <option value="usługi-firmy">Usługi i Firmy</option>
+        <option value="noclegi">Noclegi</option>
+        <option value="praca-dodatkowa">Praca dodatkowa</option>
+        <option value="noclegi-nad-morzem">Noclegi nad morzem</option>
+      </select>
+
+      <select class="form-select mb-1" aria-label="Default select example" name='user'>
+        <option value="1602171553">Użytkownik 1</option>
+        <option value="1901400593">Użytkownik 2</option>
+      </select>
+      
+      <input type="text" class="form-control mb-1" placeholder="Miasto" name = 'city'>
+      <input type="number" class="form-control mb-2" placeholder="+ Max odległość [KM]" name = 'max_distance'>
+
+      <button type="submit" class="btn btn-primary w-100">Dodaj wyszukiwanie</button>
+    </form>
+  </div>
+  
+
+  <div class="container mt-4 w-75 table-responsive">
+    <h3><i class="fas fa-list"></i> AKTYWNE WYSZUKIWANIA </h3>
+    <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            
+            <th scope="col">Fraza</th>
+            <th scope="col">Min cena</th>
+            <th scope="col">Max cena</th>
+            <th scope="col">Kategoria</th>
+            <th scope="col">Miasto</th>
+            <th scope="col">Max odległość</th>
+            <th scope="col">Powiadomienia</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for search in searches_list %}
+          <tr>
+            
+            <td>{{search[1]}}</td>
+            <td>{{search[2]}}{% if search[2] %}zł{% endif %}</td>
+            <td>{{search[3]}}{% if search[3] %}zł{% endif %}</td>
+            <td>{{search[4]}}</td>
+            <td>{{search[5]}}</td>
+            <td>{{search[6]}}{% if search[6] %}km{% endif %}</td>
+            <td>{% if search[8] == '1602171553' %}Użytkownik 1{% elif search[8] == '1901400593' %}Użytkownik 2{% endif %}</td>
+            {% if search[7]<4 %}<td class="text-warning fw-bold">Wczytuje {{search[7]*25}}%</td>
+              {% else %}<td><p class="text-success fw-bold">Aktywny</p></td>{% endif %}
+            
+            <td><a class="btn btn-danger btn-sm" href="/delete/{{search[0]}}"><i class="fas fa-trash-alt"></i></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+  
+  
+</body>
+</html>
